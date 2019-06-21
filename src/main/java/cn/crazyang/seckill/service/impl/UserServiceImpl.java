@@ -1,4 +1,4 @@
-package cn.crazyang.seckill.service.ipml;
+package cn.crazyang.seckill.service.impl;
 
 import cn.crazyang.seckill.entity.User;
 import cn.crazyang.seckill.dao.UserMapper;
@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public Result<User> login(LoginParam loginParam) {
 
+        //根据手机号查询用户
         User user = userMapper.checkPhone(loginParam.getMobile());
         if(user == null){
             return Result.error(CodeMsg.MOBILE_NOT_EXIST);
@@ -32,6 +33,7 @@ public class UserServiceImpl implements UserService{
         String dbPwd= user.getPassword();
         String saltDB = user.getSalt();
         String calcPass = MD5Util.formPassToDBPass(loginParam.getPassword(), saltDB);
+        //判断密码是否正确
         if(!StringUtils.equals(dbPwd , calcPass)){
             return Result.error(CodeMsg.PASSWORD_ERROR);
         }

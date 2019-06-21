@@ -1,4 +1,4 @@
-package cn.crazyang.seckill.service.ipml;
+package cn.crazyang.seckill.service.impl;
 
 import cn.crazyang.seckill.bo.GoodsBo;
 import cn.crazyang.seckill.common.Const;
@@ -54,7 +54,6 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
         int success = seckillGoodsService.reduceStock(goods.getId());
         if(success == 1) {
             OrderInfo orderInfo = new OrderInfo();
-            orderInfo.setCreateDate(new Date());
             orderInfo.setAddrId(0L);
             orderInfo.setGoodsCount(1);
             orderInfo.setGoodsId(goods.getId());

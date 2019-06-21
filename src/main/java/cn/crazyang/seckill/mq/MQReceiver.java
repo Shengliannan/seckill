@@ -36,7 +36,7 @@ public class MQReceiver {
 			SeckillMessage mm  = RedisService.stringToBean(message, SeckillMessage.class);
 			User user = mm.getUser();
 			long goodsId = mm.getGoodsId();
-			
+
 			GoodsBo goods = goodsService.getseckillGoodsBoByGoodsId(goodsId);
 	    	int stock = goods.getStockCount();
 	    	if(stock <= 0) {

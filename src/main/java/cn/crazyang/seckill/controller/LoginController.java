@@ -35,7 +35,7 @@ public class LoginController {
     @RequestMapping("/login")
     @ResponseBody
     public Result<User> doLogin(HttpServletResponse response, HttpSession session , @Valid LoginParam loginParam) {
-        Result<User> login = userService.login(loginParam);
+        Result<User> login = userService.login( loginParam);
         if (login.isSuccess()){
             CookieUtil.writeLoginToken(response,session.getId());
             redisService.set(UserKey.getByName , session.getId() ,login.getData(), Const.RedisCacheExtime.REDIS_SESSION_EXTIME );

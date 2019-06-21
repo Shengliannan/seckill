@@ -4,6 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
+//将redis的配置信息封装成实体类
 @ConfigurationProperties(prefix="redis")
 public class RedisConfig {
 	private String host;

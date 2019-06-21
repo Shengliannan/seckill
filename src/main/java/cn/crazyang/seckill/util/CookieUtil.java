@@ -2,6 +2,7 @@ package cn.crazyang.seckill.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -19,11 +20,13 @@ public class CookieUtil {
     private final static String COOKIE_NAME = "seckill_login_token";
 
 
+
     public static String readLoginToken(HttpServletRequest request){
         Cookie[] cks = request.getCookies();
         if(cks != null){
             for(Cookie ck : cks){
                 log.info("read cookieName:{},cookieValue:{}",ck.getName(),ck.getValue());
+                //获取指定的cookie
                 if(!StringUtils.equals(ck.getName(),COOKIE_NAME)){
                     log.info("return cookieName:{},cookieValue:{}",ck.getName(),ck.getValue());
                     return ck.getValue();

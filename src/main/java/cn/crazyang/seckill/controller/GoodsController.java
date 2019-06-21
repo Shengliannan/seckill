@@ -57,6 +57,8 @@ public class GoodsController {
          model.addAttribute("goodsList", goodsList);
     	 return "goods_list";*/
         //修改后
+
+        //先判断该用户redis是否缓存了，如果有，就取缓存gl的值，否则就去读取数据库，渲染页面存入redis
         String html = redisService.get(GoodsKey.getGoodsList, "", String.class);
         if(!StringUtils.isEmpty(html)) {
             return html;

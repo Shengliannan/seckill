@@ -5,8 +5,10 @@ import cn.crazyang.seckill.redis.RedisService;
 import cn.crazyang.seckill.redis.UserKey;
 import cn.crazyang.seckill.util.CookieUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.omg.PortableInterceptor.Interceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +41,7 @@ public class SessionExpireFilter implements Filter {
                 redisService.expice(UserKey.getByName , loginToken, Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
             }
         }
-        filterChain.doFilter(servletRequest,servletResponse);
+         filterChain.doFilter(servletRequest,servletResponse);
     }
 
 

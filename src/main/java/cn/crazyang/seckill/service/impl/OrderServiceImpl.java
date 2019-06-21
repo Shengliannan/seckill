@@ -1,4 +1,4 @@
-package cn.crazyang.seckill.service.ipml;
+package cn.crazyang.seckill.service.impl;
 
 import cn.crazyang.seckill.dao.OrdeInfoMapper;
 import cn.crazyang.seckill.entity.OrderInfo;

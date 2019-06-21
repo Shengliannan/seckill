@@ -3,7 +3,6 @@ package cn.crazyang.seckill.controller;
 import cn.crazyang.seckill.annotations.AccessLimit;
 import cn.crazyang.seckill.bo.GoodsBo;
 import cn.crazyang.seckill.common.Const;
-import cn.crazyang.seckill.entity.OrderInfo;
 import cn.crazyang.seckill.entity.SeckillOrder;
 import cn.crazyang.seckill.entity.User;
 import cn.crazyang.seckill.mq.MQSender;
@@ -49,6 +48,7 @@ public class SeckillController implements InitializingBean {
     @Autowired
     MQSender mqSender;
 
+    // 不会引起线程安全问题吗
     private HashMap<Long, Boolean> localOverMap = new HashMap<Long, Boolean>();
 
     /**
@@ -65,7 +65,7 @@ public class SeckillController implements InitializingBean {
         }
     }
 
-    @RequestMapping("/seckill2")
+    /*@RequestMapping("/seckill2")
     public String list2(Model model,
                         @RequestParam("goodsId") long goodsId, HttpServletRequest request) {
 
@@ -93,7 +93,7 @@ public class SeckillController implements InitializingBean {
         model.addAttribute("orderInfo", orderInfo);
         model.addAttribute("goods", goods);
         return "order_detail";
-    }
+    }*/
 
     @RequestMapping(value = "/{path}/seckill", method = RequestMethod.POST)
     @ResponseBody
@@ -118,12 +118,18 @@ public class SeckillController implements InitializingBean {
             return Result.error(CodeMsg.MIAO_SHA_OVER);
         }/**/
         //预减库存
+        /**
+         * redis的desr操作是原子性的
+         */
         long stock = redisService.decr(GoodsKey.getSeckillGoodsStock, "" + goodsId);//10
         if (stock < 0) {
             localOverMap.put(goodsId, true);
             return Result.error(CodeMsg.MIAO_SHA_OVER);
         }
         //判断是否已经秒杀到了
+        /**
+         * 数据库查找到了订单就是已经秒杀到了，已经秒杀到了会提示不能重复秒杀
+         */
         SeckillOrder order = seckillOrderService.getSeckillOrderByUserIdGoodsId(user.getId(), goodsId);
         if (order != null) {
             return Result.error(CodeMsg.REPEATE_MIAOSHA);
